@@ -5,12 +5,14 @@ public class Man {
     String sex;
     String name;
     double money;
-    public Man(int age, String sex, String name){
-age=this.age;
-sex = this.sex;
-name=this.name;
-    }
-    public void pay(){
 
+    public Man(int age, String sex, String name){
+        this.age=age;
+        this.sex=sex;
+        this.name=name;
     }
+
+    public void pay(){
+    }
+
 }
