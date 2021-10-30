@@ -23,7 +23,7 @@ public class Task2 {
             }
             case "char" -> {
                 System.out.println("Input value of variable (char)");
-                System.out.println(scanner.nextInt());
+                System.out.println((int)(scanner.nextLine()).charAt(0));
             }
             case "String" -> {
                 System.out.println("Input value of variable (String)");
