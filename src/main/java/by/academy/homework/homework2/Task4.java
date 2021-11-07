@@ -1,21 +1,51 @@
 package by.academy.homework.homework2;
 
 import java.util.Arrays;
+import java.util.Random;
+import java.util.Scanner;
 
 public class Task4 {
+    public static void main(String[] args) {
+        deal();
+    }
 
-    public static class CardDeck {
-        static int countCardDeck = 0;
-        int quantityCards;
-        String[] cards = new String[quantityCards];
-
-
-        public CardDeck(int quantityCards) {
+    private static void deal() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Input quantity players");
+        int n = scanner.nextInt();
+        int quantityCards = 0;
+        if (n <= 7 && n > 0) {
+            System.out.println("Input quantity cards");
+            quantityCards = scanner.nextInt();
             if (quantityCards != 36 && quantityCards != 52) {
                 System.out.println("Invalid quantityCards");
                 return;
             }
-            countCardDeck += 1;
+        } else if (n <= 10 && n > 7) {
+            quantityCards = 52;
+        } else {
+            System.out.println("Invalid value of quantity players");
+            return;
+        }
+        CardDeck cardDeck = new CardDeck(quantityCards);
+        cardDeck.cardSet(n);
+        scanner.close();
+    }
+
+/*
+Класс описывает карточную колоду. Содержит в себе 3 метода:
+public CardDeck конструктор класса для создания карточной колоды с определенным набором карт,
+private void cardSet(int n) для раздачи 5 карт n игрокам,
+private int[] shuffleCardDeck(int quantityCards) для перетасовки карт в колоде
+ */
+
+    private static class CardDeck {
+
+        private int quantityCards;
+        private String[] cards = new String[quantityCards];
+
+        public CardDeck(int quantityCards) {
+
             this.quantityCards = quantityCards;
             String[] cards;
             if (quantityCards == 36) {
@@ -38,34 +68,43 @@ public class Task4 {
             this.cards = cards;
         }
 
+        private void cardSet(int n) {
 
-        //        @Override
-//        public String toString() {
-//            return "CardDeck " + "cards: "+cards;
-//        }
-        public void cardSet(int n) {
-            if (5*n>this.quantityCards){
+            if (5 * n > this.quantityCards) {
                 System.out.println("Not enough cards");
                 return;
             }
+            int[] indexOfCardInCardDeck = shuffleCardDeck(quantityCards);
+
             for (int i = 1; i <= n; i++) {
                 StringBuilder player = new StringBuilder();
-                player.append("Player "+i+ ": ");
-
+                player.append("Player " + i + ": ");
                 for (int j = 0; j < 5; j++) {
-                    int numCard = (int)(Math.random()*quantityCards+1);
+                    player.append(cards[indexOfCardInCardDeck[(i - 1) * 5 + j]] + ", ");
                 }
-
+                System.out.println(player.deleteCharAt(player.length() - 2));
+                System.out.println();
             }
-
         }
 
-    }
-
-    public static void main(String[] args) {
-        int n=0;
-        CardDeck cardDeck1 = new CardDeck(36);
-//        CardDeck cardDeck2 = new CardDeck(52);
-        cardDeck1.cardSet(n);
+        private int[] shuffleCardDeck(int quantityCards) {
+            int[] indexOfCardInCardDeck = new int[quantityCards];
+            for (int i = 0; i < indexOfCardInCardDeck.length; i++) {
+                indexOfCardInCardDeck[i] = i;
+            }
+            int a = 0;
+            int b = 0;
+            int c = 0;
+            Random random = new Random();
+            for (int i = 0; i < 50; i++) {
+                a = random.nextInt(quantityCards);
+                b = random.nextInt(quantityCards);
+                c = indexOfCardInCardDeck[b];
+                indexOfCardInCardDeck[b] = indexOfCardInCardDeck[a];
+                indexOfCardInCardDeck[a] = c;
+            }
+            return indexOfCardInCardDeck;
+        }
     }
 }
+
