@@ -1,7 +1,10 @@
-package by.academy.homework.homework3.Task1;
+package by.academy.homework.homework3;
 
 import java.math.BigDecimal;
 
+/*
+Здесь находится описание продуктов. Все поля и методы стандартные, за что отвечают понятно по названию.
+ */
 public class Product {
     private String typeProduct;
     private double quantityProduct;
@@ -29,7 +32,7 @@ public class Product {
         return costProduct;
     }
 
-    protected double getDiscount(double quantityProduct) {
+    protected double getDiscount() {
         if (quantityProduct >= 10 && quantityProduct < 100) {
             return 0.985;
         }
@@ -38,12 +41,17 @@ public class Product {
         }
         return 1;
     }
-    protected BigDecimal getPrice(){
-        return costProduct.multiply(BigDecimal.valueOf(quantityProduct)).multiply(BigDecimal.valueOf(getDiscount(quantityProduct)));
+
+    protected BigDecimal getPrice() {
+        return costProduct.multiply(BigDecimal.valueOf(quantityProduct)).multiply(BigDecimal.valueOf(getDiscount()));
+    }
+
+    protected double getQuantityProductInCart() {
+        return quantityProduct;
     }
 
     @Override
     public String toString() {
-        return ""+typeProduct;
+        return "" + typeProduct;
     }
 }
