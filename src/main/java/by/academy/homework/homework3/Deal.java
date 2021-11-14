@@ -2,6 +2,7 @@ package by.academy.homework.homework3;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+
 /*
 Класс Deal позволяет реализовать сделку между 2 пользователями (Bargainer seller и Bargainer buyer).
 Пользователи Bargainer seller и Bargainer buyer обладают свойствами: имя, количество денег.
@@ -15,7 +16,6 @@ getFullPrice - получение суммы сделки
 public class Deal {
     private Bargainer seller;
     private Bargainer buyer;
-//    private Product[] products;
     private ArrayList<Product> productsInCart;
     private BigDecimal fullPrice = BigDecimal.valueOf(0);
 
@@ -30,6 +30,7 @@ public class Deal {
             seller.increaseMoney(fullPrice);
             buyer.decreaseMoney(fullPrice);
             printBill();
+
         } else {
             System.out.println("Not enough money");
         }
@@ -37,8 +38,8 @@ public class Deal {
 
     protected void printBill() {
         for (Product product : productsInCart) {
-            System.out.println(product + ": " + product.getQuantityProduct() + "   x   " + product.getCostProduct() + "   x   "
-                    + product.getDiscount() + "   =   " + product.getPrice());
+            System.out.println(product + ": " + product.getQuantityProduct() + "   x   " + product.getCostProduct() +
+                    "   x   " + product.getDiscount() + "   =   " + product.getPrice());
         }
         System.out.println("----------------------------------------------------------------------");
         System.out.println(fullPrice);

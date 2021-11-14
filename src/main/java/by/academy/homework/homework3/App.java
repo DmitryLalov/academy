@@ -7,13 +7,28 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class App {
+    private static ArrayList<Deal> deals;
     public static void main(String[] args) {
         createDeal(createProduct());               //Создание сделки. Внутри сначала создается массив продуктов,
-                                                   // которым владеет пользователь Bargainer seller
+        // которым владеет пользователь Bargainer seller
     }
-/*
-Метод createProduct создает изначальные массив продуктов
- */
+    /*
+    Метод createDeal создает сделку и проводит ее, если это возможно (у покупателя достаточно денег,
+    у продавца достаточно продукта. В случае совершения сделки у пользователей изменяется только количество денег в
+    соответствии с суммой сделки. Количество имеющихся у них продуктов пока (!!!) не изменяется.
+     */
+    protected static void createDeal(Product[] products) {
+        Bargainer seller = new Bargainer("Marta", BigDecimal.valueOf(500000));
+        Bargainer buyer = new Bargainer("Dmitry", BigDecimal.valueOf(1000000));
+        Deal deal1 = new Deal(seller, buyer, productsInCart(products));
+        deal1.deal();
+//        deals.add(deal1);
+//        System.out.println(deals);
+    }
+
+    /*
+    Метод createProduct создает изначальные массив продуктов
+     */
     protected static Product[] createProduct() {
         int numberOfProduct = 3;
         Product[] products = new Product[numberOfProduct];
@@ -22,16 +37,14 @@ public class App {
         products[2] = new Lamber(500, BigDecimal.valueOf(800));
         return products;
     }
-    /*
-    Метод createDeal создает сделку и проводит ее, если это возможно (у покупателя достаточно денег,
-    у продавца достаточно продукта. В случае совершения сделки у пользователей изменяется только количество денег в
-    соответствии с суммой сделки. Количество имеющихся у них продуктов пока (!!!) не изменяется.
-     */
-    protected static void createDeal(Product[] products) {
+
+    protected static ArrayList<Product> productsInCart(Product[] products) {
         ArrayList<Product> productsInCart = new ArrayList<>(products.length);
         double quantityOfProductInCart = 0;
-        System.out.println("Available products: " + products[0].getTypeProduct() + ": " + products[0].getQuantityProduct() + ", " + products[1].getTypeProduct() + ": " +
-                products[1].getQuantityProduct() + ", " + products[2].getTypeProduct() + ": " + products[2].getQuantityProduct() +
+        System.out.println("Available products: " + products[0].getTypeProduct() + ": " +
+                products[0].getQuantityProduct() + ", " + products[1].getTypeProduct() + ": " +
+                products[1].getQuantityProduct() + ", " + products[2].getTypeProduct() + ": " +
+                products[2].getQuantityProduct() +
                 ". \nInput names of products you need. Example \"rebar, lamber\"");
         Scanner sc = new Scanner(System.in);
         String productsToPurchase = sc.nextLine();
@@ -43,7 +56,8 @@ public class App {
                 System.out.println("Input quantity of " + products[i].getTypeProduct());
                 quantityOfProductInCart = sc.nextDouble();
                 while (quantityOfProductInCart > products[i].getQuantityProduct() || quantityOfProductInCart < 0) {
-                    System.out.println("Available only " + products[i].getQuantityProduct() + " " + products[i].getTypeProduct() + ". Input another quantity");
+                    System.out.println("Available only " + products[i].getQuantityProduct() + " " +
+                            products[i].getTypeProduct() + ". Input another quantity");
                     quantityOfProductInCart = sc.nextDouble();
                 }
                 if (products[i] instanceof Rebar) {
@@ -55,11 +69,7 @@ public class App {
                 }
             }
         }
-
-        Bargainer seller = new Bargainer("Marta", BigDecimal.valueOf(500000));
-        Bargainer buyer = new Bargainer("Dmitry", BigDecimal.valueOf(1000000));
-        Deal deal1 = new Deal(seller, buyer, productsInCart);
-        deal1.deal();
         sc.close();
+        return productsInCart;
     }
 }
