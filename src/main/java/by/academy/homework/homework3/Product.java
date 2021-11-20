@@ -5,7 +5,7 @@ import java.math.BigDecimal;
 /*
 Здесь находится описание продуктов. Все поля и методы стандартные, за что отвечают понятно по названию.
  */
-public class Product {
+public class Product implements Cloneable{
     private String typeProduct;
     private double quantityProduct;
     private BigDecimal costProduct = new BigDecimal(0.0);
@@ -14,6 +14,9 @@ public class Product {
 
     }
 
+    public Product clone(){
+        return clone();
+    }
     public Product(String typeProduct, double quantityProduct, BigDecimal costProduct) {
         this.typeProduct = typeProduct;
         this.quantityProduct = quantityProduct;

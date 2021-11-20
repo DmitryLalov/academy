@@ -22,7 +22,7 @@ public class App {
         Bargainer buyer = new Bargainer("Dmitry", BigDecimal.valueOf(1000000));
         Deal deal1 = new Deal(seller, buyer, productsInCart(products));
         deal1.deal();
-//        deals.add(deal1);
+        deals.add(deal1);
 //        System.out.println(deals);
     }
 
@@ -60,8 +60,13 @@ public class App {
                             products[i].getTypeProduct() + ". Input another quantity");
                     quantityOfProductInCart = sc.nextDouble();
                 }
+
+//                Product p = products[i].clone();
+//                products[i].setQuantity(products[i].getQuantityProduct() - 123);
+//                p.setQue(123)
+
                 if (products[i] instanceof Rebar) {
-                    productsInCart.add(new Rebar(quantityOfProductInCart, products[i].getCostProduct()));
+                    productsInCart.add(products[i]);
                 } else if (products[i] instanceof Concrete) {
                     productsInCart.add(new Concrete(quantityOfProductInCart, products[i].getCostProduct()));
                 } else if (products[i] instanceof Lamber) {
