@@ -7,10 +7,10 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class App {
-    private static ArrayList<Deal> deals;
+    private static Product[] productsAfterDeal;
     public static void main(String[] args) {
         createDeal(createProduct());               //Создание сделки. Внутри сначала создается массив продуктов,
-        // которым владеет пользователь Bargainer seller
+                                                   // которым владеет пользователь Bargainer seller
     }
     /*
     Метод createDeal создает сделку и проводит ее, если это возможно (у покупателя достаточно денег,
@@ -18,12 +18,13 @@ public class App {
     соответствии с суммой сделки. Количество имеющихся у них продуктов пока (!!!) не изменяется.
      */
     protected static void createDeal(Product[] products) {
+        Scanner scanner = new Scanner(System.in);
         Bargainer seller = new Bargainer("Marta", BigDecimal.valueOf(500000));
         Bargainer buyer = new Bargainer("Dmitry", BigDecimal.valueOf(1000000));
-        Deal deal1 = new Deal(seller, buyer, productsInCart(products));
+        System.out.println("Input your date of birth, "+buyer.getNameBargainer());
+
+        Deal deal1 = new Deal(seller, buyer, productsInCart(products), products, productsAfterDeal);
         deal1.deal();
-        deals.add(deal1);
-//        System.out.println(deals);
     }
 
     /*
@@ -38,14 +39,23 @@ public class App {
         return products;
     }
 
+/*
+Метод productsInCart позволяет выбрать продукты из имеющихся, указать их количество и добавить в корзину.
+ */
+
     protected static ArrayList<Product> productsInCart(Product[] products) {
         ArrayList<Product> productsInCart = new ArrayList<>(products.length);
-        double quantityOfProductInCart = 0;
-        System.out.println("Available products: " + products[0].getTypeProduct() + ": " +
-                products[0].getQuantityProduct() + ", " + products[1].getTypeProduct() + ": " +
-                products[1].getQuantityProduct() + ", " + products[2].getTypeProduct() + ": " +
-                products[2].getQuantityProduct() +
-                ". \nInput names of products you need. Example \"rebar, lamber\"");
+        double quantityProductInCart = 0;
+        productsAfterDeal=products.clone();
+        printProduct(products);
+        System.out.println("Input names of products you need. Example \"rebar, lamber\"");
+
+//        System.out.println("Available products: " + products[0].getTypeProduct() + ": " +
+//                products[0].getQuantityProduct() + ", " + products[1].getTypeProduct() + ": " +
+//                products[1].getQuantityProduct() + ", " + products[2].getTypeProduct() + ": " +
+//                products[2].getQuantityProduct() +
+//                ". \nInput names of products you need. Example \"rebar, lamber\"");
+
         Scanner sc = new Scanner(System.in);
         String productsToPurchase = sc.nextLine();
         Pattern[] patterns = new Pattern[products.length];
@@ -54,27 +64,31 @@ public class App {
             Matcher matcher = patterns[i].matcher(productsToPurchase.toLowerCase());
             if (matcher.find()) {
                 System.out.println("Input quantity of " + products[i].getTypeProduct());
-                quantityOfProductInCart = sc.nextDouble();
-                while (quantityOfProductInCart > products[i].getQuantityProduct() || quantityOfProductInCart < 0) {
+                quantityProductInCart = sc.nextDouble();
+                while (quantityProductInCart > products[i].getQuantityProduct() || quantityProductInCart < 0) {
                     System.out.println("Available only " + products[i].getQuantityProduct() + " " +
                             products[i].getTypeProduct() + ". Input another quantity");
-                    quantityOfProductInCart = sc.nextDouble();
+                    quantityProductInCart = sc.nextDouble();
                 }
-
-//                Product p = products[i].clone();
-//                products[i].setQuantity(products[i].getQuantityProduct() - 123);
-//                p.setQue(123)
+                productsAfterDeal[i].setDecreaseQuantityProduct(quantityProductInCart);
 
                 if (products[i] instanceof Rebar) {
-                    productsInCart.add(products[i]);
+                    productsInCart.add(new Rebar(quantityProductInCart, products[i].getCostProduct()));
                 } else if (products[i] instanceof Concrete) {
-                    productsInCart.add(new Concrete(quantityOfProductInCart, products[i].getCostProduct()));
+                    productsInCart.add(new Concrete(quantityProductInCart, products[i].getCostProduct()));
                 } else if (products[i] instanceof Lamber) {
-                    productsInCart.add(new Lamber(quantityOfProductInCart, products[i].getCostProduct()));
+                    productsInCart.add(new Lamber(quantityProductInCart, products[i].getCostProduct()));
                 }
             }
         }
-        sc.close();
+//        sc.close();
         return productsInCart;
+    }
+    protected static void printProduct(Product[] products){
+        System.out.println("Available products: ");
+        for (Product p:products) {
+            System.out.print(p.getTypeProduct() + ": " +
+                    p.getQuantityProduct() + ";\t");
+        }
     }
 }

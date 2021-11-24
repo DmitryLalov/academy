@@ -9,7 +9,8 @@ import java.math.BigDecimal;
 public class Rebar extends Product {
     protected static double quality;
 
-    public Rebar(double quantityProduct, BigDecimal costProduct) {
+    public Rebar(double quantityProduct, BigDecimal costProduct)
+    {
         super("rebar", quantityProduct, costProduct);
     }
 

@@ -9,24 +9,48 @@ import java.util.Scanner;
 public class Bargainer {
     String nameBargainer;
     BigDecimal money = new BigDecimal(0.0);
+    String dateOfBirth = null;
+    String phone = null;
+    String email = null;
 
     public Bargainer(String nameBargainer, BigDecimal money) {
         this.nameBargainer = nameBargainer;
         this.money = money;
     }
-
     protected String getNameBargainer() {
         return nameBargainer;
     }
-
     protected BigDecimal getMoney() {
         return money;
+    }
+
+    public String getDateOfBirth() {
+        return dateOfBirth;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setDateOfBirth(String dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     protected void increaseMoney(BigDecimal fullPrice) {
         money = money.add(fullPrice);
     }
-
     protected void decreaseMoney(BigDecimal fullPrice) {
         money = money.subtract(fullPrice);
     }

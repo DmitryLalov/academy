@@ -48,10 +48,14 @@ public class Product implements Cloneable{
     protected BigDecimal getPrice() {
         return costProduct.multiply(BigDecimal.valueOf(quantityProduct)).multiply(BigDecimal.valueOf(getDiscount()));
     }
+    protected void setDecreaseQuantityProduct(double quantityProductInCart){
+        quantityProduct-=quantityProductInCart;
+    }
 
     protected double getQuantityProductInCart() {
         return quantityProduct;
     }
+
 
     @Override
     public String toString() {
