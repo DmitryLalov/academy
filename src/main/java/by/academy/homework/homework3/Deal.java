@@ -1,6 +1,7 @@
 package by.academy.homework.homework3;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -21,6 +22,7 @@ public class Deal {
     private Product[] products;
     private Product[] productsAfterDeal;
     private BigDecimal fullPrice = BigDecimal.valueOf(0);
+    private LocalDate deadLineDate = LocalDate.now();
 
     public Deal(Bargainer seller, Bargainer buyer, ArrayList<Product> productsInCart, Product[] products, Product[] productsAfterDeal) {
         this.seller = seller;
@@ -28,6 +30,7 @@ public class Deal {
         this.productsInCart = productsInCart;
         this.products = products;
         this.productsAfterDeal = productsAfterDeal;
+        deadLineDate.plusDays(10);
     }
 
     protected void deal() {
@@ -38,7 +41,7 @@ public class Deal {
             String yesOrNo = scan.nextLine();
 
             while (!yesOrNo.equals("yes") && !yesOrNo.equals("no")) {
-                System.out.println("To confirm the purchase and payment, click yes, to cancel - no");
+                System.out.println("To confirm the purchase and payment, click \"yes\", to cancel - \"no\"");
                 yesOrNo = scan.nextLine();
             }
             if (yesOrNo.equals("yes")) {

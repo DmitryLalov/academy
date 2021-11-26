@@ -8,10 +8,12 @@ import java.util.regex.Pattern;
 
 public class App {
     private static Product[] productsAfterDeal;
+
     public static void main(String[] args) {
         createDeal(createProduct());               //Создание сделки. Внутри сначала создается массив продуктов,
-                                                   // которым владеет пользователь Bargainer seller
+        // которым владеет пользователь Bargainer seller
     }
+
     /*
     Метод createDeal создает сделку и проводит ее, если это возможно (у покупателя достаточно денег,
     у продавца достаточно продукта. В случае совершения сделки у пользователей изменяется только количество денег в
@@ -19,16 +21,41 @@ public class App {
      */
     protected static void createDeal(Product[] products) {
         Scanner scanner = new Scanner(System.in);
-        Bargainer seller = new Bargainer("Marta", BigDecimal.valueOf(500000));
-        Bargainer buyer = new Bargainer("Dmitry", BigDecimal.valueOf(1000000));
-        System.out.println("Input your date of birth, "+buyer.getNameBargainer());
+        System.out.println("Input your name");
+        String name = scanner.nextLine();
+        System.out.println("Input your date of birth dd/MM/yyyy or dd-MM-yyyy");
+        String dateOfBirth = scanner.nextLine();
+        while (!isValidDateOfBirth(dateOfBirth)) {
+            System.out.println("Invalid date of birth. Try input again.");
+            dateOfBirth = scanner.nextLine();
+        }
+        System.out.println("Input your phone (Example +375291234567)");
+        String phone = scanner.nextLine();
+        while (!isValidPhone(phone)) {
+            System.out.println("Invalid phone. Try input again.");
+            phone = scanner.nextLine();
+        }
+        System.out.println("Input your email (Example \"YourEmail@gmail.com\")");
+        String email = scanner.nextLine();
+        while (!isValidEmail(email)) {
+            System.out.println("Invalid email. Try input again");
+            email = scanner.nextLine();
+        }
 
-        Deal deal1 = new Deal(seller, buyer, productsInCart(products), products, productsAfterDeal);
-        deal1.deal();
+        Bargainer seller = new Bargainer("Building materials", BigDecimal.valueOf(5000000));
+        Bargainer buyer = new Bargainer(name, BigDecimal.valueOf(1000000), dateOfBirth, phone, email);
+        System.out.println("Press 1 to continue deal or another to cancel deal");
+        int i = Integer.parseInt(scanner.nextLine());
+        if (i == 1) {
+            Deal deal1 = new Deal(seller, buyer, productsInCart(products), products, productsAfterDeal);
+            deal1.deal();
+        } else {
+            System.exit(1);
+        }
     }
 
     /*
-    Метод createProduct создает изначальные массив продуктов
+    Метод createProduct создает изначальный массив продуктов
      */
     protected static Product[] createProduct() {
         int numberOfProduct = 3;
@@ -46,16 +73,9 @@ public class App {
     protected static ArrayList<Product> productsInCart(Product[] products) {
         ArrayList<Product> productsInCart = new ArrayList<>(products.length);
         double quantityProductInCart = 0;
-        productsAfterDeal=products.clone();
+        productsAfterDeal = products.clone();
         printProduct(products);
         System.out.println("Input names of products you need. Example \"rebar, lamber\"");
-
-//        System.out.println("Available products: " + products[0].getTypeProduct() + ": " +
-//                products[0].getQuantityProduct() + ", " + products[1].getTypeProduct() + ": " +
-//                products[1].getQuantityProduct() + ", " + products[2].getTypeProduct() + ": " +
-//                products[2].getQuantityProduct() +
-//                ". \nInput names of products you need. Example \"rebar, lamber\"");
-
         Scanner sc = new Scanner(System.in);
         String productsToPurchase = sc.nextLine();
         Pattern[] patterns = new Pattern[products.length];
@@ -84,11 +104,35 @@ public class App {
 //        sc.close();
         return productsInCart;
     }
-    protected static void printProduct(Product[] products){
+
+    /*
+    Метод printProduct выводит на экран перечень продуктов с количеством, доступным для покупки.
+     */
+
+    protected static void printProduct(Product[] products) {
         System.out.println("Available products: ");
-        for (Product p:products) {
+        for (Product p : products) {
             System.out.print(p.getTypeProduct() + ": " +
                     p.getQuantityProduct() + ";\t");
         }
+    }
+
+    /*
+    Методы isValidDateOfBirth, isValidPhone, isValidEmail валидируют данные покупателя (buyer), вводимые им с консоли.
+     */
+
+    protected static boolean isValidDateOfBirth(String dateOfBirth) {
+        DateOfBirthValidator dt = new DateOfBirthValidator(dateOfBirth);
+        return dt.isValid(dateOfBirth);
+    }
+
+    protected static boolean isValidPhone(String phone) {
+        BelarussianPhoneValidator bhv = new BelarussianPhoneValidator(phone);
+        return bhv.isValid(phone);
+    }
+
+    protected static boolean isValidEmail(String email) {
+        EmailValidator ev = new EmailValidator(email);
+        return ev.isValid(email);
     }
 }
