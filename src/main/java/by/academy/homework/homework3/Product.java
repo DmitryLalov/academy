@@ -5,7 +5,7 @@ import java.math.BigDecimal;
 /*
 Здесь находится описание продуктов. Все поля и методы стандартные, за что отвечают понятно по названию.
  */
-public class Product implements Cloneable {
+public class Product implements Cloneable{
     private String typeProduct;
     private double quantityProduct;
     private BigDecimal costProduct = new BigDecimal(0.0);
@@ -14,7 +14,7 @@ public class Product implements Cloneable {
 
     }
 
-    public Product clone() {
+    public Product clone(){
         return clone();
     }
 
@@ -49,9 +49,8 @@ public class Product implements Cloneable {
     protected BigDecimal getPrice() {
         return costProduct.multiply(BigDecimal.valueOf(quantityProduct)).multiply(BigDecimal.valueOf(getDiscount()));
     }
-
-    protected void setDecreaseQuantityProduct(double quantityProductInCart) {
-        quantityProduct -= quantityProductInCart;
+    protected void setDecreaseQuantityProduct(double quantityProductInCart){
+        quantityProduct-=quantityProductInCart;
     }
 
     protected double getQuantityProductInCart() {
