@@ -6,11 +6,27 @@ public class HeavyBox implements Comparable<HeavyBox> {
     int height;
     int depth;
 
-    HeavyBox(int w, int h, int d, int m) {
+    public HeavyBox(int w, int h, int d, int m) {
         width = w;
         height = h;
         depth = d;
         weight = m;
+    }
+
+    public int getWeight() {
+        return weight;
+    }
+
+    public int getWidth() {
+        return width;
+    }
+
+    public int getHeight() {
+        return height;
+    }
+
+    public int getDepth() {
+        return depth;
     }
 
     @Override
